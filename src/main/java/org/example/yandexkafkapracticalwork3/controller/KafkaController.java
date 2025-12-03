@@ -24,7 +24,7 @@ public class KafkaController {
 
     @GetMapping("blockUser")
     public void blockUser(@RequestParam String user,
-                          @RequestParam String blockedUser) {
+                          @RequestParam String blockedUser) throws InterruptedException {
         producer.blockUser(user, blockedUser);
     }
 
