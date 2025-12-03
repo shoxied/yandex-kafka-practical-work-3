@@ -28,7 +28,7 @@ public class Producer {
     }
 
     public void sendBlockedWord(String word) {
-        kafkaTemplateString.send("forbiddenWords", String.valueOf(UUID.randomUUID()), word);
+        kafkaTemplateString.send("forbidden_words", word, word);
     }
 
     public void blockUser(String user, String blockedUser) {

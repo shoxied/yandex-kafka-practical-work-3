@@ -1,6 +1,7 @@
 package org.example.yandexkafkapracticalwork3.config;
 
 import org.apache.kafka.common.serialization.Serdes;
+import org.example.yandexkafkapracticalwork3.dto.Message;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +9,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.EnableKafkaStreams;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerde;
 
 import java.util.HashMap;
@@ -31,6 +33,13 @@ public class MyStreamsConfig {
         props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
         props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, JsonSerde.class.getName());
         props.put(STATE_DIR_CONFIG, "/tmp/kafka-streams");
+
+        JsonSerde<Message> messageSerde = new JsonSerde<>(Message.class);
+        Map<String, Object> serdeProps = new HashMap<>();
+        serdeProps.put(JsonDeserializer.TRUSTED_PACKAGES, "org.example.yandexkafkapracticalwork3.dto");
+        messageSerde.configure(serdeProps, false);
+
+        props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, messageSerde.getClass().getName());
 
         return new KafkaStreamsConfiguration(props);
     }
