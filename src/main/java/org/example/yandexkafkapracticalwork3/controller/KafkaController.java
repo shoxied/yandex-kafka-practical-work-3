@@ -5,6 +5,8 @@ import org.example.yandexkafkapracticalwork3.dto.Message;
 import org.example.yandexkafkapracticalwork3.producer.Producer;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.ExecutionException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1")
@@ -24,7 +26,7 @@ public class KafkaController {
 
     @GetMapping("blockUser")
     public void blockUser(@RequestParam String user,
-                          @RequestParam String blockedUser) throws InterruptedException {
+                          @RequestParam String blockedUser) throws InterruptedException, ExecutionException {
         producer.blockUser(user, blockedUser);
     }
 

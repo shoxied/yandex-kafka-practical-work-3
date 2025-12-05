@@ -22,7 +22,7 @@ import java.util.*;
 public class ForbiddenWordStream {
 
     @Autowired
-    public void buildPipelines(StreamsBuilder builder) throws Exception {
+    public void buildPipelines(StreamsBuilder builder) {
 
         JsonSerde<Message> messageSerde = new JsonSerde<>(Message.class);
         Map<String, Object> serdeProps = new HashMap<>();

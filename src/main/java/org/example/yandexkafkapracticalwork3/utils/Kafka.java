@@ -8,10 +8,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
@@ -44,10 +41,13 @@ public class Kafka {
 
     private void createTopics(AdminClient admin) throws ExecutionException, InterruptedException {
 
-        NewTopic messages = new NewTopic("messages", 1, (short) 1);
-        NewTopic filteredMessages = new NewTopic("filtered_messages", 1, (short) 1);
-        NewTopic blockedUsers = new NewTopic("blocked_users", 1, (short) 1);
-        NewTopic forbiddenWords = new NewTopic("forbidden_words", 1, (short) 1);
+        Map<String, String> configs = new HashMap<>();
+        configs.put("cleanup.policy", "compact");
+
+        NewTopic messages = new NewTopic("messages", 1, (short) 1).configs(configs);
+        NewTopic filteredMessages = new NewTopic("filtered_messages", 1, (short) 1).configs(configs);
+        NewTopic blockedUsers = new NewTopic("blocked_users", 1, (short) 1).configs(configs);
+        NewTopic forbiddenWords = new NewTopic("forbidden_words", 1, (short) 1).configs(configs);
 
         admin.createTopics(Arrays.asList(messages, filteredMessages, blockedUsers, forbiddenWords)).all().get();
 
